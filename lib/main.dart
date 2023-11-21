@@ -1,3 +1,4 @@
+import 'package:bamadamarket/pages/ajoutAnnonce.dart';
 import 'package:bamadamarket/pages/article.dart';
 import 'package:bamadamarket/pages/home.dart';
 import 'package:bamadamarket/pages/inscrire.dart';
@@ -20,9 +21,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/bienvenue': (context) =>  Bienvenue(),
         '/connexion': (context) =>  Connexion(),
-        '/inscrire': (context) =>  Inscrire(),
+        '/inscrire': (context) =>  Inscrire(context: context),
         '/home':(context)=> Home(),
         '/article':(context)=> Article(),
+        '/ajoutAnnonce':(context)=>AjoutAnnonce(),
       },
     );
   }

@@ -12,7 +12,7 @@ class _BienvenueState extends State<Bienvenue> {
     // Utilisez Future.delayed pour effectuer la navigation après 3 secondes
     Future.delayed(Duration(seconds: 3), () {
       // Naviguez vers la page de connexion
-      Navigator.pushReplacementNamed(context, '/article');
+      Navigator.pushReplacementNamed(context, '/home');
     });
   }
 

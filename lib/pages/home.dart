@@ -1,6 +1,9 @@
+import 'package:bamadamarket/pages/ajoutAnnonce.dart';
+import 'package:bamadamarket/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 
 import 'accueilPage.dart';
+import 'favorisPage.dart';
 import 'messagesPage.dart';
 
 class Home extends StatefulWidget {
@@ -35,8 +38,8 @@ class _HomeState extends State<Home> {
         children: <Widget>[
              AccueilPage(), // Page d'accueil
              MessagesPage(), // Page de messages
-          // FavorisPage(), // Page de favoris
-          //  ProfilePage(), // Page de profil
+             FavorisPage(), // Page de favoris
+             ProfilePage(profileImageUrl: '',), // Page de profil
         ],
         onPageChanged: (index) {
           _onItemTapped(index); // Met à jour l'index lorsqu'une nouvelle page est affichée
@@ -69,7 +72,10 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Action à effectuer lorsque l'utilisateur appuie sur le bouton d'ajout
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>AjoutAnnonce()),
+          );
         },
         backgroundColor: Color(0xFFF53F26), // Couleur de fond du bouton
         child: Icon(

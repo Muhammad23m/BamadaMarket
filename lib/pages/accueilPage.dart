@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:bamadamarket/pages/article.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
+
 const d_green = Color(0xFFF53F26);
+
 class AccueilPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: 150,
         backgroundColor: d_green,
         title: Column(
@@ -18,44 +22,77 @@ class AccueilPage extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 35.0,
+                  color: Colors.white,
                 ),
               ),
             ),
             Row(
               children: [
                 Expanded(
-                    child: SearchBar(),
-                  ),
-                 IconButton(
-                    icon: Icon(Icons.shopping_cart, color: Colors.white, size: 32.0),
-                    onPressed: () {
-                      // Action à effectuer lors du clic sur l'icône du panier
-                    },
-                  ),
-
+                  child: SearchBar(),
+                ),
                 IconButton(
-                    icon: Icon(Icons.notifications, color: Colors.white, size: 32.0),
-                    onPressed: () {
-                      // Action à effectuer lors du clic sur l'icône de notification
-                    },
-                  ),
-
+                  icon: Icon(Icons.shopping_cart,
+                      color: Colors.white, size: 32.0),
+                  onPressed: () {
+                    // Action à effectuer lors du clic sur l'icône du panier
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.notifications,
+                      color: Colors.white, size: 32.0),
+                  onPressed: () {
+                    // Action à effectuer lors du clic sur l'icône de notification
+                  },
+                ),
               ],
             ),
           ],
         ),
       ),
       body: Column(
-        children:[
+        children: [
           MyCarousel(),
-
+          Container(
+            margin: EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Articles Recents',
+                    style:
+                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(width: 5),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              Article()), // Remplacez "ArticlesPage" par la classe de votre page d'articles
+                    );
+                  },
+                  child: Text(
+                    'Tous les articles',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.0,
+                      color: Color(0xFFF53F26),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
-
       ),
     );
   }
 }
-  class SearchBar extends StatefulWidget {
+
+class SearchBar extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final VoidCallback? onSearchPressed;
 
@@ -63,50 +100,49 @@ class AccueilPage extends StatelessWidget {
 
   @override
   _SearchBarState createState() => _SearchBarState();
-  }
+}
 
-  class _SearchBarState extends State<SearchBar> {
+class _SearchBarState extends State<SearchBar> {
   TextEditingController _textEditingController = TextEditingController();
 
   @override
   void dispose() {
-  _textEditingController.dispose();
-  super.dispose();
+    _textEditingController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-  return Card(
-  elevation: 4, // Niveau d'élévation
-  margin: EdgeInsets.only(top:25.0),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0), // Bordure arrondie
-    ),
-  child: Padding(
-  padding: const EdgeInsets.only(right: 6.0, left: 5.0),
-  child: Row(
-  children: [
-  Expanded(
-  child: TextField(
-  controller: _textEditingController,
-  onChanged: widget.onChanged,
-  decoration: InputDecoration(
-  hintText: "Recherche...", // Texte d'indications
-  border: InputBorder.none, // Pas de bordure
-  ),
-  ),
-  ),
-  IconButton(
-  icon: Icon(Icons.search),
-  onPressed: widget.onSearchPressed,
-  ),
-  ],
-  ),
-  ),
-  );
+    return Card(
+      elevation: 4, // Niveau d'élévation
+      margin: EdgeInsets.only(top: 25.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0), // Bordure arrondie
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 6.0, left: 5.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _textEditingController,
+                onChanged: widget.onChanged,
+                decoration: InputDecoration(
+                  hintText: "Recherche...", // Texte d'indications
+                  border: InputBorder.none, // Pas de bordure
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: widget.onSearchPressed,
+            ),
+          ],
+        ),
+      ),
+    );
   }
-  }
-
+}
 
 class CarouselModel extends ChangeNotifier {
   int currentIndex = 0;
@@ -152,7 +188,8 @@ class MyCarousel extends StatelessWidget {
               autoPlayCurve: Curves.fastOutSlowIn,
               enlargeCenterPage: true,
               onPageChanged: (index, reason) {
-                final carouselModel = Provider.of<CarouselModel>(context, listen: false);
+                final carouselModel =
+                    Provider.of<CarouselModel>(context, listen: false);
                 carouselModel.updateIndex(index);
               },
             ),
@@ -167,10 +204,13 @@ class MyCarousel extends StatelessWidget {
                   return Container(
                     width: 8.0,
                     height: 8.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: carouselModel.currentIndex == index ? Colors.red : Colors.green,
+                      color: carouselModel.currentIndex == index
+                          ? Colors.red
+                          : Colors.green,
                     ),
                   );
                 }).toList(),
@@ -182,5 +222,3 @@ class MyCarousel extends StatelessWidget {
     );
   }
 }
-
-
