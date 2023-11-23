@@ -37,7 +37,7 @@ class _InscrireState extends State<Inscrire> {
             await image.readAsBytes(); // Use readAsBytes method
         request.files.add(
           http.MultipartFile.fromBytes(
-            'photo',
+            'photo1',
             imageBytes,
             filename: basename(image.path),
           ),
@@ -61,7 +61,7 @@ class _InscrireState extends State<Inscrire> {
 
         setState(() {
           imageUrl = utilisateur
-              .image; // Remplacez 'imageUrl' par la clé réelle dans votre réponse
+              .image;
         });
       } else {
         debugPrint(responsed.body);

@@ -1,5 +1,6 @@
 import 'package:bamadamarket/models/articleModel.dart';
 import 'package:flutter/material.dart';
+
 class ArticleDetailPage extends StatelessWidget {
   final ModeleArticle article;
 
@@ -15,7 +16,10 @@ class ArticleDetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            Image.network(article.photo1),
+            Image.network("http://10.0.2.2${article.photo1}",
+                height: 277,
+                width: 500,
+                fit: BoxFit.cover),
             Text(article.titre),
             Text(article.prix),
             Text(article.description),

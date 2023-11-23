@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:bamadamarket/pages/sessionManager.dart';
 import 'package:http/http.dart' as http;
 import 'package:bamadamarket/services/imagePickerService.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const d_green = Color(0xFFF53F26);
 File? _selectedImage;
@@ -26,7 +28,16 @@ class _AjoutAnnonceState extends State<AjoutAnnonce> {
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _etatController = TextEditingController();
 
-  Future<void> ajouterAnnonce() async {
+  Future<void> ajouterAnnonce(BuildContext context) async {
+
+  var sessionManager = SessionManager(await SharedPreferences.getInstance());
+  var idUtilisateur = sessionManager.getidUtilisateur();
+
+  if (idUtilisateur == null) {
+    throw Exception('Utilisateur non connecté');
+  }
+  
+
     try {
       var request = http.MultipartRequest(
         'POST',
@@ -50,6 +61,9 @@ class _AjoutAnnonceState extends State<AjoutAnnonce> {
         'prix': _prixController.text,
         'description': _descriptionController.text,
         'etat': _etat,
+        'utilisateur': {
+        'idUtilisateur': idUtilisateur,
+       },
       });
 
       var response = await request.send();
@@ -69,7 +83,7 @@ class _AjoutAnnonceState extends State<AjoutAnnonce> {
   });
 
   // Affichez un SnackBar pour informer l'utilisateur que l'insertion a réussi
-  ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text('Insertion réussie'),
       duration: Duration(seconds: 2),
@@ -251,7 +265,7 @@ class _AjoutAnnonceState extends State<AjoutAnnonce> {
 
                         // Ajoutez ici la logique pour traiter les données du formulaire
                         // Vous pouvez utiliser les valeurs de _titre, _prix, _description, _etat
-                        ajouterAnnonce();
+                        ajouterAnnonce(context);
                         // Réinitialiser le formulaire après la soumission
                         _formKey.currentState!.reset();
                       }

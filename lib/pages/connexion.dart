@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:bamadamarket/pages/sessionManager.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Connexion extends StatefulWidget {
   @override
@@ -48,11 +52,14 @@ class _ConnexionState extends State<Connexion> {
       );
 
       if (response.statusCode == 200) {
-        // La connexion a réussi, vous pouvez traiter la réponse ici
-        print('Connexion réussie!');
-        print(response.body);
+        var jsonResponse = jsonDecode(response.body);
+        var idUtilisateur = jsonResponse['idUtilisateur'].toInt();
+        var sessionToken = jsonResponse['sessionToken'].toString();
 
-        // Redirection vers la page d'accueil
+        var sessionManager =
+            SessionManager(await SharedPreferences.getInstance());
+        await sessionManager.saveUserInfo(idUtilisateur,pseudo, sessionToken);
+
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         // La connexion a échoué, affichez le message d'erreur
@@ -72,114 +79,115 @@ class _ConnexionState extends State<Connexion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView (
+      body: SingleChildScrollView(
         child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Image.asset(
-                'assets/images/logo.png',
-                width: 330,
-              ),
-              Card(
-                elevation: 5,
-                margin: EdgeInsets.all(7.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  side: BorderSide(color: Color(0xFFF53F26), width: 2.0),
+          margin: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Image.asset(
+                  'assets/images/logo.png',
+                  width: 330,
                 ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    labelText: 'pseudo',
-                    filled: true,
-                    fillColor: Color(0xFFFFFF),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(10.0),
+                Card(
+                  elevation: 5,
+                  margin: EdgeInsets.all(7.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    side: BorderSide(color: Color(0xFFF53F26), width: 2.0),
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      pseudo = value;
-                    });
-                  },
-                ),
-              ),
-              Card(
-                elevation: 5,
-                margin: EdgeInsets.all(10.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  side: BorderSide(color: Color(0xFFF53F26), width: 2.0),
-                ),
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'mot de passe',
-                    filled: true,
-                    fillColor: Color(0xFFFFFF),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(10.0),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      motDePasse = value;
-                    });
-                  },
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/inscrire');
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: "n'avez-vous pas de compte? ",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16.0,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'pseudo',
+                      filled: true,
+                      fillColor: Color(0xFFFFFF),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.all(10.0),
                     ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Inscrivez-vous ici',
-                        style: TextStyle(
-                          color: Color(0xFFF53F26),
-                          fontSize: 16.0,
-                        ),
+                    onChanged: (value) {
+                      setState(() {
+                        pseudo = value;
+                      });
+                    },
+                  ),
+                ),
+                Card(
+                  elevation: 5,
+                  margin: EdgeInsets.all(10.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    side: BorderSide(color: Color(0xFFF53F26), width: 2.0),
+                  ),
+                  child: TextField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'mot de passe',
+                      filled: true,
+                      fillColor: Color(0xFFFFFF),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.all(10.0),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        motDePasse = value;
+                      });
+                    },
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/inscrire');
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      text: "n'avez-vous pas de compte? ",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 90.0),
-                child: ElevatedButton(
-                  onPressed: isLoading ? null : connecterUtilisateur,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFF53F26),
-                    fixedSize: Size(300, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: isLoading
-                      ? CircularProgressIndicator(
-                    color: Colors.white,
-                  )
-                      : Text(
-                    'Connexion',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Inscrivez-vous ici',
+                          style: TextStyle(
+                            color: Color(0xFFF53F26),
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  margin: EdgeInsets.only(top: 90.0),
+                  child: ElevatedButton(
+                    onPressed: isLoading ? null : connecterUtilisateur,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFF53F26),
+                      fixedSize: Size(300, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    child: isLoading
+                        ? CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Text(
+                            'Connexion',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),),
+      ),
     );
   }
 }

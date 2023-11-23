@@ -153,15 +153,27 @@ class ArticleGridView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(
-                    article.photo1,
-                    height: 180,
-                    width: 200,
-                    fit: BoxFit.cover,
-                  ),
-                  Text(
-                    article.titre,
-                    overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Image.network(
+                          "http://10.0.2.2${article.photo1}",
+                          height: 177,
+                          width: 200,
+                          fit: BoxFit.cover,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 100.0),
+                          child: Text(
+                            article.titre,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
