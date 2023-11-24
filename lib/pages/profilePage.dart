@@ -88,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/mesProduits');
+              Navigator.pushNamed(context, '/mesArticles');
             },
             child: Container(
               margin: EdgeInsets.only(left: 10.0, top: 80.0),
@@ -98,7 +98,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       Icon(Icons.shop_2, color: Colors.red, size: 40.0),
                       SizedBox(width: 18.0),
-                      Text("Voir mes produits", style: TextStyle(fontSize: 20.0)),
+                      Text("Voir mes produits",
+                          style: TextStyle(fontSize: 20.0)),
                     ],
                   ),
                   Divider(
@@ -110,24 +111,29 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(left: 10.0, top: 20.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.edit, color: Colors.red, size: 40.0),
-                    SizedBox(width: 18.0),
-                    Text("Modifier votre profile",
-                        style: TextStyle(fontSize: 20.0)),
-                  ],
-                ),
-                Divider(
-                  // Ajoute une barre horizontale en dessous de la ligne
-                  color: Colors.black,
-                  thickness: 0.5, // Épaisseur de la barre
-                ),
-              ],
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, '/editProfilPage');
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: 10.0, top: 20.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.edit, color: Colors.red, size: 40.0),
+                      SizedBox(width: 18.0),
+                      Text("Modifier votre profile",
+                          style: TextStyle(fontSize: 20.0)),
+                    ],
+                  ),
+                  Divider(
+                    // Ajoute une barre horizontale en dessous de la ligne
+                    color: Colors.black,
+                    thickness: 0.5, // Épaisseur de la barre
+                  ),
+                ],
+              ),
             ),
           ),
           Container(

@@ -1,7 +1,9 @@
 import 'package:bamadamarket/pages/ajoutAnnonce.dart';
 import 'package:bamadamarket/pages/article.dart';
+import 'package:bamadamarket/pages/editProfilPage.dart';
 import 'package:bamadamarket/pages/home.dart';
 import 'package:bamadamarket/pages/inscrire.dart';
+import 'package:bamadamarket/pages/mesArticles.dart';
 import 'package:flutter/material.dart';
 import 'package:bamadamarket/pages/bienvenue.dart'; // Importez la page de bienvenue que vous venez de créer
 import 'package:bamadamarket/pages/connexion.dart';
@@ -25,6 +27,8 @@ class MyApp extends StatelessWidget {
         '/home':(context)=> Home(),
         '/article':(context)=> Article(),
         '/ajoutAnnonce':(context)=>AjoutAnnonce(),
+        '/mesArticles' :(context)=>MesArticles(),
+        '/editProfilPage':(context)=>EditProfilPage(profileImageUrl: '',),
       },
     );
   }
