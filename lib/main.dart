@@ -1,14 +1,22 @@
+
+import 'package:bamadamarket/pages/Notification.dart';
 import 'package:bamadamarket/pages/ajoutAnnonce.dart';
 import 'package:bamadamarket/pages/article.dart';
 import 'package:bamadamarket/pages/editProfilPage.dart';
 import 'package:bamadamarket/pages/home.dart';
 import 'package:bamadamarket/pages/inscrire.dart';
 import 'package:bamadamarket/pages/mesArticles.dart';
+import 'package:bamadamarket/services/commandeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:bamadamarket/pages/bienvenue.dart'; // Importez la page de bienvenue que vous venez de créer
 import 'package:bamadamarket/pages/connexion.dart';
+import 'package:provider/provider.dart';
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => CommandeNotifier(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,6 +37,7 @@ class MyApp extends StatelessWidget {
         '/ajoutAnnonce':(context)=>AjoutAnnonce(),
         '/mesArticles' :(context)=>MesArticles(),
         '/editProfilPage':(context)=>EditProfilPage(profileImageUrl: '',),
+        '/notification' :(context)=>NotificationPage(),
       },
     );
   }

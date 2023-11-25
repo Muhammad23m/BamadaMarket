@@ -1,3 +1,4 @@
+import 'package:bamadamarket/pages/Notification.dart';
 import 'package:flutter/material.dart';
 import 'package:bamadamarket/pages/article.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -42,7 +43,10 @@ class AccueilPage extends StatelessWidget {
                   icon: Icon(Icons.notifications,
                       color: Colors.white, size: 32.0),
                   onPressed: () {
-                    // Action à effectuer lors du clic sur l'icône de notification
+                     Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NotificationPage()),
+                    );
                   },
                 ),
               ],

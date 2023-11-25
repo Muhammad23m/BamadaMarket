@@ -19,7 +19,7 @@ class _AjoutAnnonceState extends State<AjoutAnnonce> {
   final _formKey = GlobalKey<FormState>(); // Ajout de la clé _formKey
   ImagePickerService _imagePickerService = ImagePickerService();
   String _titre = "";
-  String _prix = "";
+  int _prix = 1;
   String _description = "";
   String _etat = "Neuf"; // Valeur par défaut pour le champ d'état
 
@@ -58,7 +58,7 @@ class _AjoutAnnonceState extends State<AjoutAnnonce> {
       }
       request.fields['annonce'] = jsonEncode({
         'titre': _titreController.text,
-        'prix': _prixController.text,
+        'prix': _prixController.value,
         'description': _descriptionController.text,
         'etat': _etat,
         'utilisateur': {
@@ -274,7 +274,7 @@ class _AjoutAnnonceState extends State<AjoutAnnonce> {
                       primary: d_green, // Couleur d_green
                       onPrimary: Colors.white, // Texte en blanc
                       padding: EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0), // Taille du bouton
+                          vertical: 10.0, horizontal: 10.0), // Taille du bouton
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       ),
