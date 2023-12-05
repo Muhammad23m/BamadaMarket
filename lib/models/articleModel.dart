@@ -1,6 +1,7 @@
 import 'package:bamadamarket/models/utilisateur.dart';
 
 class ModeleArticle {
+  final int? idAnnonce;
   final String titre;
   final int prix;
   final String description;
@@ -14,7 +15,8 @@ class ModeleArticle {
     required this.description,
     required this.photo1,
     required this.etat,
-    this.utilisateur, // L'utilisateur est maintenant optionnel
+    this.utilisateur,
+    this.idAnnonce, // L'utilisateur est maintenant optionnel
   });
 
   factory ModeleArticle.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class ModeleArticle {
       utilisateur: json['utilisateur'] != null
           ? Utilisateur.fromJson(json['utilisateur'])
           : null, // Vérifiez si l'utilisateur est null avant de l'extraire
+      idAnnonce: json['idAnnonce'], // L'utilisateur est maintenant optionnel
     );
   }
 }

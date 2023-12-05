@@ -12,7 +12,12 @@ class Article extends StatelessWidget {
         await http.get(Uri.parse('http://10.0.2.2:8080/annonce/lire'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((item) => ModeleArticle.fromJson(item)).toList();
+
+      return jsonResponse
+          .map((item) => ModeleArticle.fromJson(item))
+          .toList()
+          .reversed
+          .toList();
     } else {
       throw Exception('Erreur lors du chargement des articles');
     }

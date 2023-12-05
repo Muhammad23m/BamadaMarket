@@ -1,10 +1,9 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:bamadamarket/models/articleModel.dart';
 import 'package:bamadamarket/pages/sessionManager.dart';
 import 'package:bamadamarket/services/commandeNotifier.dart';
 import 'package:flutter/material.dart';
-import 'package:bamadamarket/models/utilisateur.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,10 +50,9 @@ class ArticleDetailPage extends StatelessWidget {
                     child: Text(
                       article.prix.toString() + ' FCFA',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 19.0,
-                        color: Colors.red
-                      ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 19.0,
+                          color: Colors.red),
                     ),
                   ),
                   Column(
@@ -300,22 +298,65 @@ class ArticleDetailPage extends StatelessWidget {
                                   ),
                                   TextButton(
                                     child: Text('Confirmer'),
-                                    onPressed: () async { // Rendez la fonction asynchrone
+                                    onPressed: () async {
                                       // Récupérez le nom d'utilisateur
-                                      SessionManager sessionManager = SessionManager(await SharedPreferences.getInstance());
-                                      String? username = sessionManager.getPseudo();
+                                      SessionManager sessionManager =
+                                          SessionManager(await SharedPreferences
+                                              .getInstance());
+                                      String? username =
+                                          sessionManager.getPseudo();
+                                      var idUtilisateur =
+                                          sessionManager.getidUtilisateur();
 
                                       // Vérifiez si le nom d'utilisateur est null
                                       if (username == null) {
                                         // Gérez l'erreur ici
                                         return;
                                       }
-                                  
-                                      Commande commande = Commande(utilisateur: username, quantite:quantite, titre: article.titre);
-                                      
+
+                                      Commande commande = Commande(
+                                          utilisateur: username,
+                                          quantite: quantite,
+                                          titre: article.titre);
+
                                       // Ajoutez la commande à CommandeNotifier
-                                      Provider.of<CommandeNotifier>(context, listen: false).ajouterCommande(commande);
-                                      
+                                      Provider.of<CommandeNotifier>(context,
+                                              listen: false)
+                                          .ajouterCommande(commande);
+
+                                      // Créez le corps de la requête
+                                      Map<String, dynamic> body = ({
+                                        'titre': article.titre,
+                                        'quantite': quantite,
+                                        'prix': article.prix,
+                                        'photo': article.photo1,
+                                        'dateCommande': DateTime.now().toIso8601String(),
+                                        'utilisateur': {
+                                          'idUtilisateur': idUtilisateur
+                                        },
+                                        'annonce': {
+                                          'idAnnonce': article.idAnnonce
+                                        },
+                                      });
+
+                                      // Envoyez la requête HTTP POST
+                                      var response = await http.post(
+                                        Uri.parse('http://10.0.2.2:8080/commande/create?commande=${json.encode(body)}'),
+                                      );
+
+                                      // Vérifiez le statut de la réponse
+                                      if (response.statusCode == 200 || response.statusCode == 201) {
+                                        // La commande a été enregistrée avec succès
+                                        print('Commande enregistrée avec succès');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Insertion réussie'),
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                      } else {
+                                        throw Exception('Erreur lors du chargement des articles');
+                                      }
                                       // Fermez la boîte de dialogue
                                       Navigator.of(context).pop();
                                     },

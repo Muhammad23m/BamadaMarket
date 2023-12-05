@@ -58,7 +58,7 @@ class _AjoutAnnonceState extends State<AjoutAnnonce> {
       }
       request.fields['annonce'] = jsonEncode({
         'titre': _titreController.text,
-        'prix': _prixController.value,
+        'prix': int.parse(_prixController.text),
         'description': _descriptionController.text,
         'etat': _etat,
         'utilisateur': {
