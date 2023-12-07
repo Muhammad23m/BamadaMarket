@@ -1,13 +1,14 @@
 import 'dart:convert';
-
 import 'package:bamadamarket/models/articleModel.dart';
 import 'package:bamadamarket/pages/Notification.dart';
 import 'package:bamadamarket/pages/articleDetailPage.dart';
 import 'package:bamadamarket/pages/commandePage.dart';
+import 'package:bamadamarket/services/commandeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:bamadamarket/pages/article.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 const d_green = Color(0xFFF53F26);
 
@@ -68,16 +69,48 @@ class AccueilPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 22.0),
-                  child: IconButton(
-                    icon: Icon(Icons.notifications,
-                        color: Colors.white, size: 32.0),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NotificationPage()),
-                      );
-                    },
+                  child: Stack(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.notifications,
+                            color: Colors.white, size: 32.0),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NotificationPage()),
+                          );
+                        },
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors
+                                .white, // Change la couleur de fond en blanc
+                            shape: BoxShape.circle,
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 12,
+                            minHeight: 12,
+                          ),
+                          child: Consumer<CommandeNotifier>(
+                            builder: (context, commandeNotifier, child) {
+                              return Text(
+                                '${commandeNotifier.commandes.length}', // Affiche le nombre de notifications
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

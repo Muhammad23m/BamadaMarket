@@ -14,19 +14,40 @@ class NotificationPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Notifications'),
       ),
-      body: Consumer<CommandeNotifier>(
-        builder: (context, commandeNotifier, child) {
-          return ListView.builder(
-            itemCount: commandeNotifier.commandes.length,
-            itemBuilder: (context, index) {
-              Commande commande = commandeNotifier.commandes[index];
-              return ListTile(
-                title: Text("${commande.utilisateur} a lancé une commande : ${commande.quantite}, ${commande.titre}. Contactez-le pour plus de détails."),
-              );
-            },
-          );
-        },
-      ),
+      body:Consumer<CommandeNotifier>(
+  builder: (context, commandeNotifier, child) {
+    return ListView.builder(
+      itemCount: commandeNotifier.commandes.length,
+      itemBuilder: (context, index) {
+        Commande commande = commandeNotifier.commandes[index];
+        return Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(width: 1.0, color: Colors.grey), // Ajoute une bordure en bas
+            ),
+          ),
+          child: ListTile(
+            title: RichText(
+              text: TextSpan(
+                text: "${commande.utilisateur} a lancé une commande : ${commande.quantite}, ${commande.titre}. ",
+                style: DefaultTextStyle.of(context).style,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: "Contactez-le",
+                    style: TextStyle(color: d_green), // Donne une couleur d_green au texte "Contactez-le"
+                  ),
+                  TextSpan(
+                    text: " pour plus de détails.",
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  },
+),
     );
   }
 }
